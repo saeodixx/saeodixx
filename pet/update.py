@@ -57,7 +57,7 @@ def bar(v):
 def button(action, label):
     url = (f"https://github.com/{REPO}/issues/new?title=pet%7C{action}"
            "&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1")
-    return f'<a href="{url}"><kbd>&nbsp;{label}&nbsp;</kbd></a>'
+    return f'<a href="{url}"><img src="./pet/btn_{action}.png" height="44" alt="{label}" /></a>'
 
 
 def render(s):

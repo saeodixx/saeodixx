@@ -17,7 +17,7 @@
 <code>🎀 재미&nbsp;&nbsp;&nbsp; ▰▰▰▰▰▰▰▰▱▱</code><br/>
 <code>💤 에너지 ▰▰▰▰▰▰▰▰▱▱</code>
 
-<a href="https://github.com/saeodixx/saeodixx/issues/new?title=pet%7Cfeed&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1"><kbd>&nbsp;🍙 밥 주기&nbsp;</kbd></a> &nbsp; <a href="https://github.com/saeodixx/saeodixx/issues/new?title=pet%7Cplay&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1"><kbd>&nbsp;🎀 놀아주기&nbsp;</kbd></a> &nbsp; <a href="https://github.com/saeodixx/saeodixx/issues/new?title=pet%7Csleep&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1"><kbd>&nbsp;💤 재우기&nbsp;</kbd></a>
+<a href="https://github.com/saeodixx/saeodixx/issues/new?title=pet%7Cfeed&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1"><img src="./pet/btn_feed.png" height="44" alt="🍙 밥 주기" /></a> &nbsp; <a href="https://github.com/saeodixx/saeodixx/issues/new?title=pet%7Cplay&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1"><img src="./pet/btn_play.png" height="44" alt="🎀 놀아주기" /></a> &nbsp; <a href="https://github.com/saeodixx/saeodixx/issues/new?title=pet%7Csleep&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1"><img src="./pet/btn_sleep.png" height="44" alt="💤 재우기" /></a>
 
 <sub>버튼을 누르고 이슈를 제출하면 1분쯤 뒤에 금자가 반응해요 · 지금까지 0번 돌봐줬어요</sub>
 
