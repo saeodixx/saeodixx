@@ -5,6 +5,7 @@
   python pet/update.py tick            # 시간이 지나면 수치가 조금씩 줄어든다
 """
 import json, re, sys, datetime as dt
+from urllib.parse import quote
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -14,10 +15,18 @@ REPO = "saeodixx/saeodixx"
 
 ACTIONS = {
     #          배부름 재미  에너지
-    "feed":  {"hunger": 25, "fun": 0,   "energy": 0,   "msg": "🍙 밥을 줬어요"},
-    "play":  {"hunger": -5, "fun": 25,  "energy": -10, "msg": "🎀 같이 놀았어요"},
-    "sleep": {"hunger": -5, "fun": 0,   "energy": 35,  "msg": "💤 재워줬어요"},
+    "feed":  {"hunger": 25, "fun": 0,   "energy": 0,   "msg": "🍙 밥을 줬어요",   "title": "🍙 금자 밥 주기"},
+    "play":  {"hunger": -5, "fun": 25,  "energy": -10, "msg": "🎀 같이 놀았어요", "title": "🎀 금자랑 놀아주기"},
+    "sleep": {"hunger": -5, "fun": 0,   "energy": 35,  "msg": "💤 재워줬어요",   "title": "🌙 금자 재우기"},
 }
+
+
+def action_from_title(title):
+    title = title.strip()
+    for k, v in ACTIONS.items():
+        if title == v["title"] or title == f"pet|{k}":
+            return k
+    return None
 DECAY = {"hunger": -4, "fun": -3, "energy": -2}
 
 
@@ -55,9 +64,14 @@ def bar(v):
 
 
 def button(action, label):
-    url = (f"https://github.com/{REPO}/issues/new?title=pet%7C{action}"
-           "&body=%EC%A0%9C%EC%B6%9C%ED%95%98%EB%A9%B4+%EA%B8%88%EC%9E%90%EA%B0%80+%EB%B0%98%EC%9D%91%ED%95%B4%EC%9A%94+%E2%99%A1")
+    t = quote(ACTIONS[action]["title"])
+    b = quote("아래 초록색 Create 버튼만 누르면 금자가 반응해요 ♡")
+    url = f"https://github.com/{REPO}/issues/new?title={t}&body={b}"
     return f'<a href="{url}"><img src="./pet/btn_{action}.png" height="44" alt="{label}" /></a>'
+
+
+def stat(key, v):
+    return f'<img src="./pet/stats/{key}_{round(v / 10)}.png" height="36" alt="{key} {v}" />'
 
 
 def render(s):
@@ -70,13 +84,13 @@ def render(s):
 
 **정금자** · Lv.{s['level']} &nbsp;—&nbsp; {line}
 
-<code>🍙 배부름 {bar(s['hunger'])}</code><br/>
-<code>🎀 재미&nbsp;&nbsp;&nbsp; {bar(s['fun'])}</code><br/>
-<code>💤 에너지 {bar(s['energy'])}</code>
+{stat('hunger', s['hunger'])}<br/>
+{stat('fun', s['fun'])}<br/>
+{stat('energy', s['energy'])}
 
 {button('feed', '🍙 밥 주기')} &nbsp; {button('play', '🎀 놀아주기')} &nbsp; {button('sleep', '💤 재우기')}
 
-<sub>버튼을 누르고 이슈를 제출하면 1분쯤 뒤에 금자가 반응해요 · 지금까지 {s['care_count']}번 돌봐줬어요</sub>
+<sub>버튼 누르고 초록색 Create 한 번이면 1분 뒤 금자가 반응해요 · 지금까지 {s['care_count']}번 돌봐줬어요</sub>
 
 {hist}
 </div>
@@ -92,8 +106,8 @@ def write_readme(s):
 def main(argv):
     s = load()
     if argv[:1] == ["action"]:
-        action, login = argv[1], argv[2]
-        if action not in ACTIONS or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
+        action, login = action_from_title(argv[1]), argv[2]
+        if action is None or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
             print("ignored"); return 1
         eff = ACTIONS[action]
         for k in ("hunger", "fun", "energy"):

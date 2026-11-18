@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   care:
-    if: github.event_name != 'issues' || startsWith(github.event.issue.title, 'pet|')
+    if: github.event_name != 'issues' || contains(github.event.issue.title, '금자')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,8 +30,7 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           if [ "$EVENT" = "issues" ]; then
-            ACTION="${TITLE#pet|}"
-            python pet/update.py action "$ACTION" "$LOGIN" > out.txt || echo ignored > out.txt
+            python pet/update.py action "$TITLE" "$LOGIN" > out.txt || echo ignored > out.txt
           else
             python pet/update.py tick > out.txt
           fi
