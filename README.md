@@ -3,11 +3,11 @@
 <!-- PET:START -->
 <div align="center">
 
-<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_06c2ac22cc_0.gif" width="166" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 95 재미 100 에너지 90" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_06c2ac22cc_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_06c2ac22cc_2.gif" width="158" alt="재우기" /></a></p>
+<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_487d870214_0.gif" width="166" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 90 재미 100 에너지 100" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_487d870214_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_487d870214_2.gif" width="158" alt="재우기" /></a></p>
 
 <br/>
 
-<img src="./pet/guestbook/gb_080fb23b07.png" width="400" alt="금자 방명록" />
+<img src="./pet/guestbook/gb_7381236b44.png" width="400" alt="금자 방명록" />
 
 </div>
 <!-- PET:END -->
