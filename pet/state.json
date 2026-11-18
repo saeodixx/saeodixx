@@ -1,9 +1,11 @@
 {
-  "hunger": 76,
+  "hunger": 71,
   "fun": 77,
-  "energy": 78,
+  "energy": 100,
   "level": 1,
-  "care_count": 0,
-  "history": [],
-  "updated_at": "2026-11-18T03:19:12+00:00"
+  "care_count": 1,
+  "history": [
+    "💤 재워줬어요 — @saeodixx"
+  ],
+  "updated_at": "2026-11-18T03:19:48+00:00"
 }
