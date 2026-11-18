@@ -11,7 +11,12 @@
 
 <br/>
 
+<details>
+<summary><img src="./pet/gb_open.png" height="34" alt="금자 방명록 펼쳐보기" /></summary>
+
 <img src="https://geumja-care.vercel.app/api/guestbook" width="400" alt="금자 방명록" />
+
+</details>
 
 </div>
 <!-- PET:END -->

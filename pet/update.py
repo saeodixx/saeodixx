@@ -79,7 +79,12 @@ def stat(key, v):
 
 def history_block(s):
     # 방명록은 Vercel 이 열 때마다 최신 기록으로 그려준다 (pet/guestbook.json)
-    return f'<img src="{GUESTBOOK_URL}" width="400" alt="금자 방명록" />'
+    return f"""<details>
+<summary><img src="./pet/gb_open.png" height="34" alt="금자 방명록 펼쳐보기" /></summary>
+
+<img src="{GUESTBOOK_URL}" width="400" alt="금자 방명록" />
+
+</details>"""
 
 
 def guestbook_msg(action):
