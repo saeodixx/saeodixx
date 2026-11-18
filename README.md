@@ -22,6 +22,10 @@
 
 <br/>
 
+<p align="center"><img src="./pet/divider.png" width="600" alt="" /></p>
+
+<br/>
+
 <p align="center"><img src="./pet/stack.png" width="600" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, Spring Boot, Express, Java, PostgreSQL, Docker" /></p>
 
 <p align="center">
