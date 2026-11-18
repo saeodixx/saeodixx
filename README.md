@@ -21,7 +21,7 @@
 
 <br/>
 
-<p align="center"><img src="./pet/stack_v2.png" width="600" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, Spring Boot, Express, Java, PostgreSQL, Docker, AWS EC2, S3, ECR" /></p>
+<p align="center"><img src="./pet/stack_v3.png" width="660" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, JSP, Spring Boot, Express, Java, PostgreSQL, MySQL, Oracle, Redis, Docker, AWS EC2, S3, ECR" /></p>
 
 <br/>
 
