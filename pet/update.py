@@ -124,12 +124,6 @@ def render(s):
 
 <p>{card}</p>
 
-<br/>
-
-<img src="./pet/divider.png" width="600" alt="" />
-
-<br/>
-
 {hist}
 
 </div>
