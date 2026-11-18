@@ -55,7 +55,11 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ event_type: "care", client_payload: { action: a, visitor } }),
     });
     ok = r.status === 204;
-  } catch (e) {}
+    if (!ok) console.error("dispatch failed", r.status, (await r.text()).slice(0, 300),
+      "token set:", Boolean(process.env.GITHUB_TOKEN));
+  } catch (e) {
+    console.error("dispatch error", String(e));
+  }
 
   if (!ok) {
     res.statusCode = 502;
