@@ -49,14 +49,14 @@ def save(s):
 
 def mood(s):
     if s["energy"] < 25:
-        return "sleepy", "꾸벅꾸벅 졸려요…"
+        return "sleepy", "으음… 졸려… 5분만 더 잘게…"
     if s["hunger"] < 30:
-        return "hungry", "배고파요… 밥 주세요 🥺"
+        return "hungry", "배고파… 밥 줄 거지? 🥺"
     if s["fun"] < 30:
-        return "bored", "심심해요… 놀아줘요"
+        return "bored", "심심해~ 나랑 놀아줘!"
     if min(s["hunger"], s["fun"], s["energy"]) >= 70:
-        return "happy", "최고로 행복해요 ✨"
-    return "idle", "기분 좋아요 ♡"
+        return "happy", "오늘 최고로 행복해! ✨"
+    return "idle", "놀러 와줘서 고마워 ♡"
 
 
 def bar(v):
@@ -81,7 +81,7 @@ def render(s):
 
 <img src="./pet/{key}.gif" width="200" alt="정금자 ({key})" />
 
-**정금자** · Lv.{s['level']} &nbsp;—&nbsp; {line}
+**정금자** · Lv.{s['level']} &nbsp; 💬 “{line}”
 
 {stat('hunger', s['hunger'])}<br/>
 {stat('fun', s['fun'])}<br/>

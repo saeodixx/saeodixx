@@ -5,7 +5,7 @@
 
 <img src="./pet/happy.gif" width="200" alt="정금자 (happy)" />
 
-**정금자** · Lv.1 &nbsp;—&nbsp; 최고로 행복해요 ✨
+**정금자** · Lv.1 &nbsp; 💬 “오늘 최고로 행복해! ✨”
 
 <img src="./pet/stats/hunger_10.png" height="36" alt="hunger 96" /><br/>
 <img src="./pet/stats/fun_8.png" height="36" alt="fun 77" /><br/>
