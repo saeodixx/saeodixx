@@ -8,6 +8,8 @@ import json, re, sys, datetime as dt
 from urllib.parse import quote
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 ROOT = Path(__file__).resolve().parent.parent
 STATE = ROOT / "pet" / "state.json"
 README = ROOT / "README.md"
@@ -73,9 +75,35 @@ def stat(key, v):
     return f'<img src="./pet/stats/{key}_{round(v / 10)}.png" height="36" alt="{key} {v}" />'
 
 
+def history_block(s):
+    try:
+        import guestbook
+        path = guestbook.write(s["history"], s["care_count"])
+        return f'<img src="{path}" width="600" alt="금자 방명록" />'
+    except ImportError:  # Pillow 가 없으면 글자로
+        rows = [f"{e['who']} — {guestbook_msg(e['action'])}" for e in s["history"][:5]]
+        return "<br/>\n".join(f"<sub>{r}</sub>" for r in rows) or "<sub>아직 아무도 안 왔어요</sub>"
+
+
+def guestbook_msg(action):
+    return {"feed": "밥을 줬어요", "play": "같이 놀았어요", "sleep": "재워줬어요"}[action]
+
+
+def migrate(s):
+    """예전 글자 기록("🍙 밥을 줬어요 — 이름")을 구조화된 기록으로 바꾼다."""
+    out = []
+    for h in s.get("history", []):
+        if isinstance(h, dict):
+            out.append(h); continue
+        act = next((k for k, v in ACTIONS.items() if h.startswith(v["msg"])), None)
+        if act and " — " in h:
+            out.append({"action": act, "who": h.split(" — ", 1)[1], "at": ""})
+    s["history"] = out
+
+
 def render(s):
     key, line = mood(s)
-    hist = "".join(f"<sub>{h}</sub><br/>\n" for h in s["history"][:5]) or "<sub>아직 아무도 안 왔어요</sub>\n"
+    hist = history_block(s)
     return f"""<!-- PET:START -->
 <div align="center">
 
@@ -89,8 +117,10 @@ def render(s):
 
 {button('feed', '🍙 밥 주기')} &nbsp; {button('play', '🎀 놀아주기')} &nbsp; {button('sleep', '💤 재우기')}
 
+<br/>
 
 {hist}
+
 </div>
 <!-- PET:END -->"""
 
@@ -117,12 +147,13 @@ def apply(s, action, who):
         s[k] = clamp(s[k] + eff[k])
     s["care_count"] += 1
     s["level"] = 1 + s["care_count"] // 10
-    s["history"].insert(0, f"{eff['msg']} — {who}")
+    s["history"].insert(0, {"action": action, "who": who, "at": now()})
     s["history"] = s["history"][:5]
 
 
 def main(argv):
     s = load()
+    migrate(s)
     if argv[:1] == ["action"]:
         action, login = action_from_title(argv[1]), argv[2]
         if action is None or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
