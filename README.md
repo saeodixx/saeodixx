@@ -3,15 +3,7 @@
 <!-- PET:START -->
 <div align="center">
 
-<img src="./pet/happy.gif" width="200" alt="정금자 (happy)" />
-
-**정금자** · Lv.1 &nbsp; 💬 “오늘 최고로 행복해! ✨”
-
-<img src="./pet/stats/hunger_10.png" height="36" alt="hunger 95" /><br/>
-<img src="./pet/stats/fun_10.png" height="36" alt="fun 100" /><br/>
-<img src="./pet/stats/energy_9.png" height="36" alt="energy 90" />
-
-<a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/btn_feed.png" height="44" alt="🍙 밥 주기" /></a> &nbsp; <a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/btn_play.png" height="44" alt="🎀 놀아주기" /></a> &nbsp; <a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/btn_sleep.png" height="44" alt="💤 재우기" /></a>
+<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_06c2ac22cc_0.gif" width="166" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 95 재미 100 에너지 90" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_06c2ac22cc_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_06c2ac22cc_2.gif" width="158" alt="재우기" /></a></p>
 
 <br/>
 

@@ -51,7 +51,7 @@ def save(s):
 
 def mood(s):
     if s["energy"] < 25:
-        return "sleepy", "으음… 졸려… 5분만 더 잘게…"
+        return "sleepy", "으음… 5분만 더 잘게…"
     if s["hunger"] < 30:
         return "hungry", "배고파… 밥 줄 거지? 🥺"
     if s["fun"] < 30:
@@ -101,13 +101,26 @@ def migrate(s):
     s["history"] = out
 
 
+def card_block(s, key, line):
+    """배경 카드 하나로 감싼 금자. 세 조각이 붙어서 한 장처럼 보이고, 조각마다 버튼 하나."""
+    try:
+        import panel
+        parts = panel.write(key, line, s["level"], {k: s[k] for k in ("hunger", "fun", "energy")})
+    except ImportError:
+        return None
+    labels = {"feed": "밥 주기", "play": "놀아주기", "sleep": "재우기"}
+    alts = [f"정금자 — {line} · 배부름 {s['hunger']} 재미 {s['fun']} 에너지 {s['energy']}", "", ""]
+    return "".join(
+        f'<a href="{CARE_URL}?a={a}"><img src="{p}" width="{w}" alt="{alt or labels[a]}" /></a>'
+        for (p, w), a, alt in zip(parts, ("feed", "play", "sleep"), alts))
+
+
 def render(s):
     key, line = mood(s)
     hist = history_block(s)
-    return f"""<!-- PET:START -->
-<div align="center">
-
-<img src="./pet/{key}.gif" width="200" alt="정금자 ({key})" />
+    card = card_block(s, key, line)
+    if card is None:  # Pillow 가 없을 때의 예전 모양
+        card = f"""<img src="./pet/{key}.gif" width="200" alt="정금자 ({key})" />
 
 **정금자** · Lv.{s['level']} &nbsp; 💬 “{line}”
 
@@ -115,7 +128,11 @@ def render(s):
 {stat('fun', s['fun'])}<br/>
 {stat('energy', s['energy'])}
 
-{button('feed', '🍙 밥 주기')} &nbsp; {button('play', '🎀 놀아주기')} &nbsp; {button('sleep', '💤 재우기')}
+{button('feed', '🍙 밥 주기')} &nbsp; {button('play', '🎀 놀아주기')} &nbsp; {button('sleep', '💤 재우기')}"""
+    return f"""<!-- PET:START -->
+<div align="center">
+
+<p>{card}</p>
 
 <br/>
 
