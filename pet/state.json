@@ -1,8 +1,9 @@
 {
-  "hunger": 95,
-  "fun": 100,
-  "energy": 100,
+  "hunger": 93.0,
+  "fun": 98.7,
+  "energy": 99.1,
   "level": 1,
   "care_count": 7,
-  "updated_at": "2026-11-18T07:35:24+00:00"
+  "updated_at": "2026-11-18T08:54:09+00:00",
+  "decayed_at": "2026-11-18T08:54:09+00:00"
 }
