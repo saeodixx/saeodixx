@@ -1,8 +1,8 @@
 {
-  "hunger": 100,
+  "hunger": 95,
   "fun": 100,
   "energy": 100,
   "level": 1,
-  "care_count": 6,
-  "updated_at": "2026-11-18T04:14:44+00:00"
+  "care_count": 7,
+  "updated_at": "2026-11-18T07:35:24+00:00"
 }
