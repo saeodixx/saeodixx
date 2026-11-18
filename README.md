@@ -3,7 +3,7 @@
 <!-- PET:START -->
 <div align="center">
 
-<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_487d870214_0.gif" width="166" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 90 재미 100 에너지 100" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_487d870214_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_487d870214_2.gif" width="158" alt="재우기" /></a></p>
+<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_487d870214_0.gif" width="186" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 90 재미 100 에너지 100" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_487d870214_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_487d870214_2.gif" width="178" alt="재우기" /></a></p>
 
 <br/>
 

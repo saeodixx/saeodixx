@@ -11,13 +11,17 @@ INK = (58, 35, 80, 255)
 WHITE = (255, 255, 255, 255)
 KEY = (1, 2, 3)
 
-W = 250
-FEET = 100
-BTN_Y, STAT_Y, TEXT_Y = 190, 124, 106
-H = BTN_Y + 24 + 2 + 7
+W = 270
+FEET = 96
+PILL_Y = 101                      # 이름·대사 말풍선
+TRAY_Y = 121                      # 흰 패널 시작
+STAT_Y = TRAY_Y + 7
+BTN_Y = STAT_Y + 3 * 21 + 3
+TRAY_B = BTN_Y + 24 + 5           # 흰 패널 끝
+H = TRAY_B + 7 + 2
 BTNS = ["feed", "play", "sleep"]
 GAP = 6
-SPARKS = [(18, 16), (226, 22), (30, 78), (214, 84), (74, 10), (180, 52)]
+SPARKS = [(18, 16), (246, 22), (30, 78), (234, 84), (78, 10), (196, 52)]
 
 GLYPH = {
     "z": ["1111", "0010", "0100", "1111"],
@@ -52,30 +56,39 @@ def _base(level, line):
     m = _mask(W, body_h, 10)
     img.paste(Image.new("RGBA", (W, body_h), INK), (0, 2), m)
     img.paste(Image.new("RGBA", (W, body_h), INK), (0, 0), m)
-    grad = Image.new("RGBA", (W - 2, body_h - 2))
-    gd = ImageDraw.Draw(grad)
-    top, bot = (241, 230, 255), (255, 224, 240)
+    # 위쪽: 은은한 Y2K 체크무늬 + 아래로 갈수록 핑크
+    bg = Image.new("RGBA", (W - 2, body_h - 2))
+    px = bg.load()
+    T = 10
     for y in range(body_h - 2):
-        t = y / (body_h - 3)
-        gd.line([(0, y), (W, y)], fill=tuple(round(top[k] + (bot[k] - top[k]) * t) for k in range(3)) + (255,))
-    gd.line([(8, 1), (W - 12, 1)], fill=WHITE)                       # gloss
-    img.paste(grad, (1, 1), _mask(W - 2, body_h - 2, 9))
-    d = ImageDraw.Draw(img)
+        t = min(1, y / TRAY_Y)
+        for x in range(W - 2):
+            a = (x // T + y // T) % 2
+            c0 = (236, 224, 255) if a else (246, 239, 255)
+            c1 = (255, 214, 234) if a else (255, 230, 242)
+            px[x, y] = tuple(round(c0[k] + (c1[k] - c0[k]) * t) for k in range(3)) + (255,)
+    ImageDraw.Draw(bg).line([(8, 1), (W - 12, 1)], fill=WHITE)       # gloss
+    img.paste(bg, (1, 1), _mask(W - 2, body_h - 2, 9))
     # floor shadow
     sh = Image.new("RGBA", (W, H))
-    ImageDraw.Draw(sh).ellipse([W // 2 - 22, FEET - 3, W // 2 + 22, FEET + 3], fill=(120, 80, 160, 60))
+    ImageDraw.Draw(sh).ellipse([W // 2 - 20, FEET - 3, W // 2 + 20, FEET + 3], fill=(120, 80, 160, 70))
     img.alpha_composite(sh)
-    # name + speech
-    fb = ImageFont.truetype(str(HERE / "fonts" / "Galmuri11-Bold.ttf"), 12)
-    fr = ImageFont.truetype(str(HERE / "fonts" / "Galmuri11.ttf"), 12)
+    d = ImageDraw.Draw(img)
+    # 아래쪽: 흰 패널이 스탯과 버튼을 감싼다
+    d.rounded_rectangle([5, TRAY_Y + 1, W - 6, TRAY_B + 1], 7, fill=(214, 196, 236, 255))     # soft drop
+    d.rounded_rectangle([5, TRAY_Y, W - 6, TRAY_B], 7, fill=(255, 253, 255, 255), outline=INK)
+    # 이름·대사: 작은 글씨, 흰 말풍선 알약 안에
+    f9 = ImageFont.truetype(str(HERE / "fonts" / "Galmuri9.ttf"), 10)
     d.fontmode = "1"
     name, lv = "정금자", f" Lv.{level}"
     speech = "“" + re.sub(r"[\U00010000-\U0010ffff✨️]", "", line).strip() + "”"
-    total = fb.getlength(name) + fr.getlength(lv) + 8 + fr.getlength(speech)
-    x = (W - total) / 2
-    d.text((x, TEXT_Y), name, font=fb, fill=INK); x += fb.getlength(name)
-    d.text((x, TEXT_Y), lv, font=fr, fill=(150, 120, 180, 255)); x += fr.getlength(lv) + 8
-    d.text((x, TEXT_Y), speech, font=fr, fill=(200, 70, 140, 255))
+    total = f9.getlength(name) + f9.getlength(lv) + 6 + f9.getlength(speech)
+    x0 = round((W - total) / 2)
+    d.rounded_rectangle([x0 - 7, PILL_Y, x0 + round(total) + 6, PILL_Y + 13], 6, fill=WHITE, outline=INK)
+    x = x0
+    d.text((x, PILL_Y + 2), name, font=f9, fill=INK); x += f9.getlength(name)
+    d.text((x, PILL_Y + 2), lv, font=f9, fill=(150, 120, 180, 255)); x += f9.getlength(lv) + 6
+    d.text((x, PILL_Y + 2), speech, font=f9, fill=(210, 70, 145, 255))
     return img
 
 
