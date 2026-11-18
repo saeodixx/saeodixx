@@ -5,7 +5,7 @@
 <!-- PET:START -->
 <div align="center">
 
-<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_340e408b15_0.gif" width="186" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 93 재미 99 에너지 99" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_340e408b15_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_340e408b15_2.gif" width="178" alt="재우기" /></a></p>
+<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_a58c6a2530_0.gif" width="186" alt="정금자 — 오늘 최고로 행복해! ✨ · 배부름 89 재미 96 에너지 97" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_a58c6a2530_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_a58c6a2530_2.gif" width="178" alt="재우기" /></a></p>
 
 <details>
 <summary><picture><img src="./pet/gb_open.png" height="34" alt="금자 방명록 펼쳐보기" /></picture></summary>
