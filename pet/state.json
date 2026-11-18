@@ -1,11 +1,15 @@
 {
-  "hunger": 71,
+  "hunger": 96,
   "fun": 77,
   "energy": 100,
   "level": 1,
-  "care_count": 1,
+  "care_count": 2,
   "history": [
+    "🍙 밥을 줬어요 — 반짝 토끼",
     "💤 재워줬어요 — @saeodixx"
   ],
-  "updated_at": "2026-11-18T03:30:29+00:00"
+  "updated_at": "2026-11-18T03:35:39+00:00",
+  "recent": {
+    "8f4f0c4561c40de2": "2026-11-18T03:35:39+00:00"
+  }
 }
