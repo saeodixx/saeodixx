@@ -22,7 +22,7 @@
 
 <br/>
 
-<p align="center"><img src="./pet/stack.png" width="600" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, Spring Boot, Express, Java, PostgreSQL, Docker" /></p>
+<p align="center"><img src="./pet/stack_v2.png" width="600" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, Spring Boot, Express, Java, PostgreSQL, Docker, AWS EC2, S3, ECR" /></p>
 
 <p align="center">
 <a href="https://github.com/App-Legend/HUR"><img src="./pet/projects/hur.png" width="250" alt="HUR" /></a>
