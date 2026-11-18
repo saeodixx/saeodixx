@@ -15,6 +15,8 @@ STATE = ROOT / "pet" / "state.json"
 README = ROOT / "README.md"
 REPO = "saeodixx/saeodixx"
 CARE_URL = "https://geumja-care.vercel.app/api/care"
+GUESTBOOK_URL = "https://geumja-care.vercel.app/api/guestbook"
+GUESTBOOK = ROOT / "pet" / "guestbook.json"
 
 ACTIONS = {
     #          배부름 재미  에너지
@@ -76,29 +78,12 @@ def stat(key, v):
 
 
 def history_block(s):
-    try:
-        import guestbook
-        path = guestbook.write(s["history"], s["care_count"])
-        return f'<img src="{path}" width="400" alt="금자 방명록" />'
-    except ImportError:  # Pillow 가 없으면 글자로
-        rows = [f"{e['who']} — {guestbook_msg(e['action'])}" for e in s["history"][:5]]
-        return "<br/>\n".join(f"<sub>{r}</sub>" for r in rows) or "<sub>아직 아무도 안 왔어요</sub>"
+    # 방명록은 Vercel 이 열 때마다 최신 기록으로 그려준다 (pet/guestbook.json)
+    return f'<img src="{GUESTBOOK_URL}" width="400" alt="금자 방명록" />'
 
 
 def guestbook_msg(action):
     return {"feed": "밥을 줬어요", "play": "같이 놀았어요", "sleep": "재워줬어요"}[action]
-
-
-def migrate(s):
-    """예전 글자 기록("🍙 밥을 줬어요 — 이름")을 구조화된 기록으로 바꾼다."""
-    out = []
-    for h in s.get("history", []):
-        if isinstance(h, dict):
-            out.append(h); continue
-        act = next((k for k, v in ACTIONS.items() if h.startswith(v["msg"])), None)
-        if act and " — " in h:
-            out.append({"action": act, "who": h.split(" — ", 1)[1], "at": ""})
-    s["history"] = out
 
 
 def card_block(s, key, line):
@@ -168,29 +153,30 @@ def apply(s, action, who):
         s[k] = clamp(s[k] + eff[k])
     s["care_count"] += 1
     s["level"] = 1 + s["care_count"] // 10
-    s["history"].insert(0, {"action": action, "who": who, "at": now()})
-    s["history"] = s["history"][:5]
+
+
+def guestbook_add(action, who):
+    """이슈로 들어온 돌봄을 방명록에 적는다. (원클릭은 Vercel 함수가 직접 적는다)"""
+    g = json.loads(GUESTBOOK.read_text(encoding="utf-8"))
+    g["entries"].insert(0, {"action": action, "who": who, "at": now()})
+    g["entries"] = g["entries"][:5]
+    g["count"] += 1
+    GUESTBOOK.write_text(json.dumps(g, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8")
 
 
 def main(argv):
     s = load()
-    migrate(s)
     if argv[:1] == ["action"]:
         action, login = action_from_title(argv[1]), argv[2]
         if action is None or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
             print("ignored"); return 1
         apply(s, action, f"@{login}")
+        guestbook_add(action, f"@{login}")
     elif argv[:1] == ["care"]:
         action, visitor = argv[1], argv[2]
         if action not in ACTIONS or not re.fullmatch(r"[0-9a-f]{16}", visitor):
             print("ignored"); return 1
-        t = dt.datetime.now(dt.timezone.utc)
-        recent = {v: ts for v, ts in s.get("recent", {}).items()
-                  if t - dt.datetime.fromisoformat(ts) < dt.timedelta(minutes=COOLDOWN_MIN)}
-        if visitor in recent:
-            print("ignored"); return 1
-        recent[visitor] = now()
-        s["recent"] = recent
+        # 도배 방지와 방명록 기록은 Vercel 함수가 이미 했다. 여기선 스탯만.
         apply(s, action, nickname(visitor))
     elif argv[:1] == ["tick"]:
         for k, d in DECAY.items():
