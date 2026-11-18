@@ -17,7 +17,7 @@
 
 <br/>
 
-<p align="center"><img src="./pet/divider.png" width="600" alt="" /></p>
+<p align="center"><img src="https://geumja-care.vercel.app/api/divider" width="600" alt="" /></p>
 
 <br/>
 

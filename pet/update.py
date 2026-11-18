@@ -32,7 +32,8 @@ def action_from_title(title):
         if title == v["title"] or title == f"pet|{k}":
             return k
     return None
-DECAY = {"hunger": -4, "fun": -3, "energy": -2}
+# 한 시간에 줄어드는 양 (하루면 배부름 -36, 재미 -24, 에너지 -17)
+DECAY_PER_HOUR = {"hunger": 1.5, "fun": 1.0, "energy": 0.7}
 
 
 def clamp(v):
@@ -99,7 +100,7 @@ def card_block(s, key, line):
     except ImportError:
         return None
     labels = {"feed": "밥 주기", "play": "놀아주기", "sleep": "재우기"}
-    alts = [f"정금자 — {line} · 배부름 {s['hunger']} 재미 {s['fun']} 에너지 {s['energy']}", "", ""]
+    alts = [f"정금자 — {line} · 배부름 {round(s['hunger'])} 재미 {round(s['fun'])} 에너지 {round(s['energy'])}", "", ""]
     return "".join(
         f'<a href="{CARE_URL}?a={a}"><img src="{p}" width="{w}" alt="{alt or labels[a]}" /></a>'
         for (p, w), a, alt in zip(parts, ("feed", "play", "sleep"), alts))
@@ -163,8 +164,24 @@ def guestbook_add(action, who):
     GUESTBOOK.write_text(json.dumps(g, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8")
 
 
+def decay(s, min_hours=0.0):
+    """마지막으로 줄인 뒤 흐른 시간만큼 스탯을 줄인다. 실행을 놓쳐도 다음 번에 따라잡는다.
+    흐른 시간이 min_hours 보다 짧으면 아무것도 안 하고 False."""
+    t = dt.datetime.now(dt.timezone.utc)
+    last = dt.datetime.fromisoformat(s.get("decayed_at") or s.get("updated_at") or now())
+    hours = (t - last).total_seconds() / 3600
+    if hours < min_hours:
+        return False
+    for k, per_hour in DECAY_PER_HOUR.items():
+        s[k] = round(clamp(s[k] - per_hour * hours), 1)
+    s["decayed_at"] = t.replace(microsecond=0).isoformat()
+    return True
+
+
 def main(argv):
     s = load()
+    if argv[:1] in (["action"], ["care"]):
+        decay(s)                     # 돌보기 전에 그동안 배고파진 만큼 먼저 반영
     if argv[:1] == ["action"]:
         action, login = action_from_title(argv[1]), argv[2]
         if action is None or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
@@ -178,8 +195,9 @@ def main(argv):
         # 도배 방지와 방명록 기록은 Vercel 함수가 이미 했다. 여기선 스탯만.
         apply(s, action, nickname(visitor))
     elif argv[:1] == ["tick"]:
-        for k, d in DECAY.items():
-            s[k] = clamp(s[k] + d)
+        # 프로필을 볼 때마다 요청이 올 수 있으니, 1시간이 안 지났으면 건너뛴다
+        if not decay(s, min_hours=1.0):
+            print("ignored"); return 1
     elif argv[:1] != ["render"]:
         print(__doc__); return 2
     s["updated_at"] = now()
