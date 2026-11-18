@@ -15,19 +15,19 @@
 
 <br/>
 
-<img src="./pet/guestbook/gb_df6d0ee4d0.png" width="600" alt="금자 방명록" />
+<img src="./pet/guestbook/gb_df6d0ee4d0.png" width="400" alt="금자 방명록" />
 
 </div>
 <!-- PET:END -->
 
 <br/>
 
-<p align="center"><img src="./pet/stack.png" height="183" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, Spring Boot, Express, Java, PostgreSQL, Docker" /></p>
+<p align="center"><img src="./pet/stack.png" width="600" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, Spring Boot, Express, Java, PostgreSQL, Docker" /></p>
 
 <p align="center">
-<a href="https://github.com/App-Legend/HUR"><img src="./pet/projects/hur.png" width="400" alt="HUR" /></a>
-<a href="https://github.com/dynamicduo-daelim/habit_monster"><img src="./pet/projects/moaroutine.png" width="400" alt="모아루틴" /></a>
-<a href="https://github.com/App-Legend/Skills-GUI"><img src="./pet/projects/skillgui.png" width="400" alt="Skill-GUI" /></a>
-<a href="https://github.com/App-Legend/POPOL-ing"><img src="./pet/projects/popoling.png" width="400" alt="POPOL-ing" /></a>
-<a href="https://github.com/App-Legend/treeplan"><img src="./pet/projects/treeplan.png" width="400" alt="TreePlan" /></a>
+<a href="https://github.com/App-Legend/HUR"><img src="./pet/projects/hur.png" width="260" alt="HUR" /></a>
+<a href="https://github.com/dynamicduo-daelim/habit_monster"><img src="./pet/projects/moaroutine.png" width="260" alt="모아루틴" /></a>
+<a href="https://github.com/App-Legend/Skills-GUI"><img src="./pet/projects/skillgui.png" width="260" alt="Skill-GUI" /></a>
+<a href="https://github.com/App-Legend/POPOL-ing"><img src="./pet/projects/popoling.png" width="260" alt="POPOL-ing" /></a>
+<a href="https://github.com/App-Legend/treeplan"><img src="./pet/projects/treeplan.png" width="260" alt="TreePlan" /></a>
 </p>

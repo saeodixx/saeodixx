@@ -79,7 +79,7 @@ def history_block(s):
     try:
         import guestbook
         path = guestbook.write(s["history"], s["care_count"])
-        return f'<img src="{path}" width="600" alt="금자 방명록" />'
+        return f'<img src="{path}" width="400" alt="금자 방명록" />'
     except ImportError:  # Pillow 가 없으면 글자로
         rows = [f"{e['who']} — {guestbook_msg(e['action'])}" for e in s["history"][:5]]
         return "<br/>\n".join(f"<sub>{r}</sub>" for r in rows) or "<sub>아직 아무도 안 왔어요</sub>"
