@@ -1,0 +1,61 @@
+name: 정금자 키우기
+
+on:
+  issues:
+    types: [opened]
+  schedule:
+    - cron: "0 */3 * * *"   # 3시간마다 배고파지고 심심해짐
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: pet
+  cancel-in-progress: false
+
+jobs:
+  care:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, 'pet|')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 행동 반영
+        id: run
+        env:
+          TITLE: ${{ github.event.issue.title }}
+          LOGIN: ${{ github.event.issue.user.login }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "issues" ]; then
+            ACTION="${TITLE#pet|}"
+            python pet/update.py action "$ACTION" "$LOGIN" > out.txt || echo ignored > out.txt
+          else
+            python pet/update.py tick > out.txt
+          fi
+          echo "mood=$(cat out.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: 커밋
+        if: steps.run.outputs.mood != 'ignored'
+        run: |
+          git config user.name "geumja-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md pet/state.json
+          git diff --cached --quiet || git commit -m "🐣 정금자: ${{ steps.run.outputs.mood }}"
+          git push
+
+      - name: 이슈 닫기
+        if: github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUM: ${{ github.event.issue.number }}
+          MOOD: ${{ steps.run.outputs.mood }}
+        run: |
+          if [ "$MOOD" = "ignored" ]; then
+            MSG="금자가 무슨 말인지 몰라서 고개를 갸웃했어요. README 버튼으로 다시 와주세요!"
+          else
+            MSG="금자가 고마워해요 ♡ 1분쯤 뒤에 [프로필](https://github.com/${{ github.repository_owner }})에서 확인해 보세요!"
+          fi
+          gh issue close "$NUM" --repo "${{ github.repository }}" --comment "$MSG"
