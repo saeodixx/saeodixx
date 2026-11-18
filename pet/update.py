@@ -89,7 +89,6 @@ def render(s):
 
 {button('feed', '🍙 밥 주기')} &nbsp; {button('play', '🎀 놀아주기')} &nbsp; {button('sleep', '💤 재우기')}
 
-<sub>버튼 한 번이면 끝! 1분 뒤 금자가 반응해요 · 지금까지 {s['care_count']}번 돌봐줬어요</sub>
 
 {hist}
 </div>
