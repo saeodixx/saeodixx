@@ -1,4 +1,4 @@
-<h1 align="center">SAEODIXX_WORLD</h1>
+<h1 align="center">SAEODIXX</h1>
 
 <p align="center"><a href="mailto:brrenda20051@gmail.com"><img src="./pet/contact.png" height="34" alt="brrenda20051@gmail.com" /></a></p>
 
