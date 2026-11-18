@@ -7,21 +7,23 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = Path(__file__).resolve().parent
 PARTS, FRAMES, OUT_DIR = HERE / "parts", HERE / "frames", HERE / "panel"
 S = 2
+DESIGN = 3                        # 디자인을 바꾸면 올려서 이미지 캐시를 피한다
 INK = (58, 35, 80, 255)
 WHITE = (255, 255, 255, 255)
 KEY = (1, 2, 3)
 
 W = 270
-FEET = 96
-PILL_Y = 101                      # 이름·대사 말풍선
-TRAY_Y = 121                      # 흰 패널 시작
+WX0, WY0, WX1, WY1 = 58, 6, 270 - 59, 108   # 캐릭터 창 (geumja.exe)
+FEET = 103
+PILL_Y = 113                      # 이름·대사 말풍선
+TRAY_Y = 133                      # 흰 패널 시작
 STAT_Y = TRAY_Y + 7
 BTN_Y = STAT_Y + 3 * 21 + 3
 TRAY_B = BTN_Y + 24 + 5           # 흰 패널 끝
 H = TRAY_B + 7 + 2
 BTNS = ["feed", "play", "sleep"]
 GAP = 6
-SPARKS = [(18, 16), (246, 22), (30, 78), (234, 84), (78, 10), (196, 52)]
+SPARKS = [(20, 18), (240, 26), (34, 70), (228, 84), (74, 34), (190, 62), (24, 108), (244, 110)]
 
 GLYPH = {
     "z": ["1111", "0010", "0100", "1111"],
@@ -56,19 +58,46 @@ def _base(level, line):
     m = _mask(W, body_h, 10)
     img.paste(Image.new("RGBA", (W, body_h), INK), (0, 2), m)
     img.paste(Image.new("RGBA", (W, body_h), INK), (0, 0), m)
-    # 위쪽: 은은한 Y2K 체크무늬 + 아래로 갈수록 핑크
+    # 바깥: 부드러운 그라데이션
     bg = Image.new("RGBA", (W - 2, body_h - 2))
-    px = bg.load()
-    T = 10
+    bd = ImageDraw.Draw(bg)
+    top, bot = (244, 236, 255), (255, 226, 241)
     for y in range(body_h - 2):
-        t = min(1, y / TRAY_Y)
-        for x in range(W - 2):
-            a = (x // T + y // T) % 2
-            c0 = (236, 224, 255) if a else (246, 239, 255)
-            c1 = (255, 214, 234) if a else (255, 230, 242)
-            px[x, y] = tuple(round(c0[k] + (c1[k] - c0[k]) * t) for k in range(3)) + (255,)
-    ImageDraw.Draw(bg).line([(8, 1), (W - 12, 1)], fill=WHITE)       # gloss
+        t = y / (body_h - 3)
+        bd.line([(0, y), (W, y)], fill=tuple(round(top[k] + (bot[k] - top[k]) * t) for k in range(3)) + (255,))
+    bd.line([(8, 1), (W - 12, 1)], fill=WHITE)                        # gloss
     img.paste(bg, (1, 1), _mask(W - 2, body_h - 2, 9))
+    # 캐릭터 창: 제목줄 + 체크무늬 무대
+    ww, wh = WX1 - WX0 + 1, WY1 - WY0 + 1
+    win = Image.new("RGBA", (ww, wh), INK)
+    inner = Image.new("RGBA", (ww - 2, wh - 2))
+    ip = inner.load()
+    for y in range(wh - 2):
+        for x in range(ww - 2):
+            if y < 11:
+                t = x / (ww - 3)
+                c = tuple(round((255, 190, 222)[k] + ((214, 192, 255)[k] - (255, 190, 222)[k]) * t) for k in range(3))
+                if y == 0: c = (255, 236, 246)
+            else:
+                a = ((x // 8) + ((y - 11) // 8)) % 2
+                c = (236, 225, 255) if a else (248, 242, 255)
+            ip[x, y] = c + (255,)
+    idr = ImageDraw.Draw(inner)
+    idr.line([(0, 11), (ww - 3, 11)], fill=INK)
+    win.paste(inner, (1, 1), _mask(ww - 2, wh - 2, 5))
+    m2 = _mask(ww, wh, 6)
+    img.paste(Image.new("RGBA", (ww, wh), INK), (WX0, WY0 + 2), m2)    # 창 그림자
+    img.paste(win, (WX0, WY0), m2)
+    dd = ImageDraw.Draw(img)
+    dd.fontmode = "1"
+    f9t = ImageFont.truetype(str(HERE / "fonts" / "Galmuri9.ttf"), 10)
+    dd.text((WX0 + 6, WY0 + 2), "♡ GEUMJA.EXE", font=f9t, fill=INK)
+    for k in range(3):                                                 # _ □ x
+        bx = WX1 - 8 - k * 9
+        dd.rectangle([bx - 3, WY0 + 3, bx + 3, WY0 + 9], fill=WHITE, outline=INK)
+    dd.line([(WX1 - 10, WY0 + 5), (WX1 - 6, WY0 + 7)], fill=INK); dd.line([(WX1 - 10, WY0 + 7), (WX1 - 6, WY0 + 5)], fill=INK)
+    dd.rectangle([WX1 - 19, WY0 + 5, WX1 - 15, WY0 + 7], outline=INK)
+    dd.line([(WX1 - 28, WY0 + 7), (WX1 - 24, WY0 + 7)], fill=INK)
     # floor shadow
     sh = Image.new("RGBA", (W, H))
     ImageDraw.Draw(sh).ellipse([W // 2 - 20, FEET - 3, W // 2 + 20, FEET + 3], fill=(120, 80, 160, 70))
@@ -121,7 +150,7 @@ def _frames(mood, base):
         for i, f in enumerate(fs + fs[:1]):
             im = card(f, ox, oy, i)
             for k, hx in enumerate((cx - 40, cx + 30, cx - 20)):
-                _put(im, "heart", hx, 40 - ((i * 5 + k * 12) % 32), (255, 92, 160, 255), WHITE)
+                _put(im, "heart", hx, 52 - ((i * 5 + k * 12) % 28), (255, 92, 160, 255), WHITE)
             out.append(im)
         return out, 110
     if mood == "hungry":
@@ -131,7 +160,7 @@ def _frames(mood, base):
             im = card(f, ox, oy, i)
             if i % 8 < 6:
                 d = ImageDraw.Draw(im)
-                bx, by = cx + 22, 10
+                bx, by = cx + 22, 22
                 d.ellipse([bx, by, bx + 32, by + 26], fill=WHITE, outline=INK)
                 d.ellipse([bx - 4, by + 29, bx + 1, by + 34], fill=WHITE, outline=INK)
                 d.polygon([(bx + 16, by + 5), (bx + 8, by + 21), (bx + 24, by + 21)], fill=WHITE, outline=INK)
@@ -145,7 +174,7 @@ def _frames(mood, base):
         for i in range(12):
             im = card(_darken(seq[i % len(seq)], 70), ox, oy, i, (255, 236, 170, 255))
             for k, (zx, g) in enumerate(((cx + 18, "z"), (cx + 26, "Z"), (cx + 36, "Z"))):
-                _put(im, g, zx + (i + k) % 2, 34 - ((i * 2 + k * 8) % 24), WHITE, (90, 70, 150, 255))
+                _put(im, g, zx + (i + k) % 2, 46 - ((i * 2 + k * 8) % 22), WHITE, (90, 70, 150, 255))
             out.append(im)
         return out, 260
     if mood == "bored":
@@ -153,7 +182,7 @@ def _frames(mood, base):
         for i in range(12):
             im = card(fs[(i // 3) % len(fs)], ox, oy, i)
             for k in range(min(3, i % 6)):
-                _put(im, "dot", cx + 16 + k * 6, 22, (110, 95, 130, 255))
+                _put(im, "dot", cx + 16 + k * 6, 32, (110, 95, 130, 255))
             out.append(im)
         return out, 300
     return [card(f, ox, oy, i) for i, f in enumerate(seq)], 220
@@ -194,7 +223,7 @@ def write(mood, line, level, stats):
     frames, dur = _frames(mood, base)
 
     OUT_DIR.mkdir(exist_ok=True)
-    tag = hashlib.sha1(repr((mood, line, level, stats)).encode()).hexdigest()[:10]
+    tag = hashlib.sha1(repr((DESIGN, mood, line, level, stats)).encode()).hexdigest()[:10]
     keep = set()
     result = []
     for n, (a, b) in enumerate(cuts):

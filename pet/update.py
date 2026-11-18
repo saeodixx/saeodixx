@@ -136,6 +136,10 @@ def render(s):
 
 <br/>
 
+<img src="./pet/divider.png" width="600" alt="" />
+
+<br/>
+
 {hist}
 
 </div>
