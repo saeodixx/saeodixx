@@ -1,5 +1,7 @@
 <h1 align="center">SAEODIXX_WORLD</h1>
 
+<p align="center"><a href="mailto:brrenda20051@gmail.com"><img src="./pet/contact.png" height="34" alt="brrenda20051@gmail.com" /></a></p>
+
 <!-- PET:START -->
 <div align="center">
 
@@ -21,7 +23,7 @@
 
 <br/>
 
-<p align="center"><img src="./pet/stack_v3.png" width="660" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, JSP, Spring Boot, Express, Java, PostgreSQL, MySQL, Oracle, Redis, Docker, AWS EC2, S3, ECR" /></p>
+<p align="center"><img src="./pet/stack_v4.png" width="700" alt="Stack: Flutter, Dart, Kotlin, React, TypeScript, Node.js, JSP, Spring Boot, Express, Java, API 연동, PostgreSQL, MySQL, Oracle, Redis, Docker, Docker Compose, Nginx, GitHub Actions, AWS EC2, S3, ECR, Claude, ChatGPT, Gemini, Local LLM, GitHub, Jira, Notion, Figma" /></p>
 
 <br/>
 
