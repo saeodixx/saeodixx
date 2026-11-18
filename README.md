@@ -7,15 +7,15 @@
 
 **정금자** · Lv.1 &nbsp; 💬 “오늘 최고로 행복해! ✨”
 
-<img src="./pet/stats/hunger_10.png" height="36" alt="hunger 100" /><br/>
-<img src="./pet/stats/fun_8.png" height="36" alt="fun 77" /><br/>
-<img src="./pet/stats/energy_10.png" height="36" alt="energy 100" />
+<img src="./pet/stats/hunger_10.png" height="36" alt="hunger 95" /><br/>
+<img src="./pet/stats/fun_10.png" height="36" alt="fun 100" /><br/>
+<img src="./pet/stats/energy_9.png" height="36" alt="energy 90" />
 
 <a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/btn_feed.png" height="44" alt="🍙 밥 주기" /></a> &nbsp; <a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/btn_play.png" height="44" alt="🎀 놀아주기" /></a> &nbsp; <a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/btn_sleep.png" height="44" alt="💤 재우기" /></a>
 
 <br/>
 
-<img src="./pet/guestbook/gb_e719334ee6.png" width="600" alt="금자 방명록" />
+<img src="./pet/guestbook/gb_df6d0ee4d0.png" width="600" alt="금자 방명록" />
 
 </div>
 <!-- PET:END -->
