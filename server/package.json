@@ -1,0 +1,5 @@
+{
+  "name": "geumja",
+  "private": true,
+  "engines": { "node": ">=18" }
+}

@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 STATE = ROOT / "pet" / "state.json"
 README = ROOT / "README.md"
 REPO = "saeodixx/saeodixx"
+CARE_URL = "https://geumja-care.vercel.app/api/care"
 
 ACTIONS = {
     #          배부름 재미  에너지
@@ -64,9 +65,7 @@ def bar(v):
 
 
 def button(action, label):
-    t = quote(ACTIONS[action]["title"])
-    b = quote("아래 초록색 Create 버튼만 누르면 금자가 반응해요 ♡")
-    url = f"https://github.com/{REPO}/issues/new?title={t}&body={b}"
+    url = f"{CARE_URL}?a={action}"
     return f'<a href="{url}"><img src="./pet/btn_{action}.png" height="44" alt="{label}" /></a>'
 
 
@@ -90,7 +89,7 @@ def render(s):
 
 {button('feed', '🍙 밥 주기')} &nbsp; {button('play', '🎀 놀아주기')} &nbsp; {button('sleep', '💤 재우기')}
 
-<sub>버튼 누르고 초록색 Create 한 번이면 1분 뒤 금자가 반응해요 · 지금까지 {s['care_count']}번 돌봐줬어요</sub>
+<sub>버튼 한 번이면 끝! 1분 뒤 금자가 반응해요 · 지금까지 {s['care_count']}번 돌봐줬어요</sub>
 
 {hist}
 </div>
@@ -103,19 +102,45 @@ def write_readme(s):
     README.write_text(new, encoding="utf-8")
 
 
+NICK_A = ["딸기", "별사탕", "말랑", "반짝", "솜사탕", "젤리", "복숭아", "구름", "버블", "체리"]
+NICK_B = ["토끼", "고양이", "곰돌이", "병아리", "햄스터", "강아지", "펭귄", "다람쥐"]
+COOLDOWN_MIN = 10
+
+
+def nickname(visitor):
+    h = int(visitor[:8], 16)
+    return f"{NICK_A[h % len(NICK_A)]} {NICK_B[(h // 7) % len(NICK_B)]}"
+
+
+def apply(s, action, who):
+    eff = ACTIONS[action]
+    for k in ("hunger", "fun", "energy"):
+        s[k] = clamp(s[k] + eff[k])
+    s["care_count"] += 1
+    s["level"] = 1 + s["care_count"] // 10
+    s["history"].insert(0, f"{eff['msg']} — {who}")
+    s["history"] = s["history"][:5]
+
+
 def main(argv):
     s = load()
     if argv[:1] == ["action"]:
         action, login = action_from_title(argv[1]), argv[2]
         if action is None or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
             print("ignored"); return 1
-        eff = ACTIONS[action]
-        for k in ("hunger", "fun", "energy"):
-            s[k] = clamp(s[k] + eff[k])
-        s["care_count"] += 1
-        s["level"] = 1 + s["care_count"] // 10
-        s["history"].insert(0, f"{eff['msg']} — @{login}")
-        s["history"] = s["history"][:5]
+        apply(s, action, f"@{login}")
+    elif argv[:1] == ["care"]:
+        action, visitor = argv[1], argv[2]
+        if action not in ACTIONS or not re.fullmatch(r"[0-9a-f]{16}", visitor):
+            print("ignored"); return 1
+        t = dt.datetime.now(dt.timezone.utc)
+        recent = {v: ts for v, ts in s.get("recent", {}).items()
+                  if t - dt.datetime.fromisoformat(ts) < dt.timedelta(minutes=COOLDOWN_MIN)}
+        if visitor in recent:
+            print("ignored"); return 1
+        recent[visitor] = now()
+        s["recent"] = recent
+        apply(s, action, nickname(visitor))
     elif argv[:1] == ["tick"]:
         for k, d in DECAY.items():
             s[k] = clamp(s[k] + d)

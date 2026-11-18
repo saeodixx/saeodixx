@@ -6,6 +6,8 @@ on:
   schedule:
     - cron: "0 */3 * * *"   # 3시간마다 배고파지고 심심해짐
   workflow_dispatch:
+  repository_dispatch:
+    types: [care]          # 원클릭 버튼 (Vercel 함수가 보냄)
 
 permissions:
   contents: write
@@ -28,9 +30,14 @@ jobs:
           TITLE: ${{ github.event.issue.title }}
           LOGIN: ${{ github.event.issue.user.login }}
           EVENT: ${{ github.event_name }}
+          CARE_ACTION: ${{ github.event.client_payload.action }}
+          VISITOR: ${{ github.event.client_payload.visitor }}
         run: |
+          git pull --ff-only -q   # 대기하던 실행도 최신 상태에서 시작
           if [ "$EVENT" = "issues" ]; then
             python pet/update.py action "$TITLE" "$LOGIN" > out.txt || echo ignored > out.txt
+          elif [ "$EVENT" = "repository_dispatch" ]; then
+            python pet/update.py care "$CARE_ACTION" "$VISITOR" > out.txt || echo ignored > out.txt
           else
             python pet/update.py tick > out.txt
           fi
