@@ -1,6 +1,6 @@
 <h1 align="center">SAEODIXX</h1>
 
-<p align="center"><a href="mailto:brrenda20051@gmail.com"><img src="./pet/contact.png" height="34" alt="brrenda20051@gmail.com" /></a></p>
+<p align="center"><a href="https://saeodixx.github.io/"><img src="./pet/portfolio.png" height="34" alt="포트폴리오 saeodixx.github.io" /></a>&nbsp;<a href="mailto:brrenda20051@gmail.com"><img src="./pet/contact.png" height="34" alt="brrenda20051@gmail.com" /></a></p>
 
 <!-- PET:START -->
 <div align="center">
