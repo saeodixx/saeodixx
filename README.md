@@ -5,7 +5,7 @@
 <!-- PET:START -->
 <div align="center">
 
-<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_ebd76d9b5f_0.gif" width="186" alt="정금자 — 놀러 와줘서 고마워 ♡ · 배부름 33 재미 59 에너지 71" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_ebd76d9b5f_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_ebd76d9b5f_2.gif" width="178" alt="재우기" /></a></p>
+<p><a href="https://geumja-care.vercel.app/api/care?a=feed"><img src="./pet/panel/p_5df2d1c2fc_0.gif" width="186" alt="정금자 — 배고파… 밥 줄 거지? 🥺 · 배부름 22 재미 51 에너지 66" /></a><a href="https://geumja-care.vercel.app/api/care?a=play"><img src="./pet/panel/p_5df2d1c2fc_1.gif" width="176" alt="놀아주기" /></a><a href="https://geumja-care.vercel.app/api/care?a=sleep"><img src="./pet/panel/p_5df2d1c2fc_2.gif" width="178" alt="재우기" /></a></p>
 
 <details>
 <summary><picture><img src="./pet/gb_open.png" height="34" alt="금자 방명록 펼쳐보기" /></picture></summary>
