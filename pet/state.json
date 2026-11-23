@@ -1,10 +1,10 @@
 {
-  "hunger": 0,
+  "hunger": 45,
   "fun": 0,
-  "energy": 20.1,
-  "level": 1,
-  "care_count": 8,
-  "updated_at": "2026-11-23T01:42:13+00:00",
+  "energy": 55.1,
+  "level": 2,
+  "care_count": 11,
+  "updated_at": "2026-11-23T01:49:55+00:00",
   "decayed_at": "2026-11-23T01:42:13+00:00",
-  "applied_until": "2026-11-22T08:01:58+00:00"
+  "applied_until": "2026-11-23T01:42:07+00:00"
 }
