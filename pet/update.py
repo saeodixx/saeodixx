@@ -178,6 +178,19 @@ def decay(s, min_hours=0.0):
     return True
 
 
+def apply_pending(s):
+    """방명록에 적혔지만 아직 스탯에 안 들어간 돌봄을 모두 반영한다.
+    care 실행이 GitHub 동시 실행 규칙 때문에 취소돼도, 다음 실행(tick 포함)이 대신 채워 준다."""
+    g = json.loads(GUESTBOOK.read_text(encoding="utf-8"))
+    done = s.get("applied_until") or s.get("updated_at") or now()
+    todo = sorted((e for e in g.get("entries", []) if e.get("at", "") > done and e.get("action") in ACTIONS),
+                  key=lambda e: e["at"])
+    for e in todo:
+        apply(s, e["action"], e.get("who", ""))
+        s["applied_until"] = e["at"]
+    return bool(todo)
+
+
 def main(argv):
     s = load()
     if argv[:1] in (["action"], ["care"]):
@@ -186,17 +199,20 @@ def main(argv):
         action, login = action_from_title(argv[1]), argv[2]
         if action is None or not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
             print("ignored"); return 1
-        apply(s, action, f"@{login}")
         guestbook_add(action, f"@{login}")
+        apply_pending(s)             # 방금 적은 기록까지 한 번에 반영
     elif argv[:1] == ["care"]:
         action, visitor = argv[1], argv[2]
         if action not in ACTIONS or not re.fullmatch(r"[0-9a-f]{16}", visitor):
             print("ignored"); return 1
-        # 도배 방지와 방명록 기록은 Vercel 함수가 이미 했다. 여기선 스탯만.
-        apply(s, action, nickname(visitor))
+        # Vercel 함수가 방명록에 이미 적었다. 여기선 방명록에 쌓인 것을 스탯에 반영만 한다.
+        apply_pending(s)
     elif argv[:1] == ["tick"]:
-        # 프로필을 볼 때마다 요청이 올 수 있으니, 1시간이 안 지났으면 건너뛴다
-        if not decay(s, min_hours=1.0):
+        # 프로필을 볼 때마다 요청이 올 수 있으니, 1시간이 안 지났으면 줄이지는 않는다.
+        # 그래도 밀려 있던 돌봄이 있으면 반영한다.
+        decayed = decay(s, min_hours=1.0)
+        applied = apply_pending(s)
+        if not decayed and not applied:
             print("ignored"); return 1
     elif argv[:1] != ["render"]:
         print(__doc__); return 2
